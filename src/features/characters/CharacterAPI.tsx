@@ -1,9 +1,9 @@
-interface RootObject {
-  info: Info;
-  results: Result[];
-}
+type CharacterGlobalAPI = {
+  info: InformationAPI;
+  results: CharacterInformationAPI[];
+};
 
-interface Result {
+type CharacterInformationAPI = {
   id: number;
   name: string;
   status: string;
@@ -13,18 +13,19 @@ interface Result {
   origin: Origin;
   location: Origin;
   image: string;
+  episode: string[];
   url: string;
   created: string;
-}
+};
 
-interface Origin {
+type Origin = {
   name: string;
   url: string;
-}
+};
 
-interface Info {
+type InformationAPI = {
   count: number;
   pages: number;
   next: string;
   prev: string;
-}
+};

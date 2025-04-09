@@ -13,15 +13,12 @@ export default function PageCharacters() {
     'https://rickandmortyapi.com/api/character'
   );
 
-  const { data, isLoading, isError, error } = useQuery<RootObject>(
-    ['data', url],
+  const { data, isLoading, isError, error } = useQuery<CharacterGlobalAPI>(
+    ['character', url],
     async () => {
       const response = await fetch(url);
       if (!response.ok) throw new Error('Network response was not ok');
       return response.json();
-    },
-    {
-      retry: 1,
     }
   );
 
@@ -37,50 +34,49 @@ export default function PageCharacters() {
     }
   };
 
-  const display = () => {
-    if (isLoading) {
-      return <LoaderFull />;
-    }
+  if (isLoading) {
+    return <LoaderFull />;
+  }
 
-    if (isError) {
-      return <ErrorPage />;
-    }
+  if (isError) {
+    return <ErrorPage />;
+  }
 
-    return (
-      <Stack>
-        <Stack spacing={15}>
-          {data?.results.map((c) => (
-            <CardCharacter key={c.id} character={c}></CardCharacter>
-          ))}
-        </Stack>
-        <Divider />
-        <Stack
-          marginBottom={5}
-          justifyContent="space-around"
-          direction="row"
-          spacing={4}
-          align="center"
-        >
-          <Button
-            isDisabled={data?.info.prev === null}
-            onClick={prev}
-            colorScheme="teal"
-            variant="ghost"
-          >
-            Previous
-          </Button>
-          <Button
-            isDisabled={data?.info.next === null}
-            onClick={next}
-            colorScheme="teal"
-            variant="ghost"
-          >
-            Next
-          </Button>
-        </Stack>
+  return (
+    <Stack>
+      <Stack spacing={15}>
+        {data?.results.map((character) => (
+          <CardCharacter
+            key={character.id}
+            character={character}
+          ></CardCharacter>
+        ))}
       </Stack>
-    );
-  };
-
-  return display();
+      <Divider />
+      <Stack
+        marginBottom={5}
+        justifyContent="space-around"
+        direction="row"
+        spacing={4}
+        align="center"
+      >
+        <Button
+          isDisabled={data?.info.prev === null}
+          onClick={prev}
+          colorScheme="teal"
+          variant="ghost"
+        >
+          Previous
+        </Button>
+        <Button
+          isDisabled={data?.info.next === null}
+          onClick={next}
+          colorScheme="teal"
+          variant="ghost"
+        >
+          Next
+        </Button>
+      </Stack>
+    </Stack>
+  );
 }
