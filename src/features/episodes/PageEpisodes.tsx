@@ -8,12 +8,12 @@ import { LoaderFull } from '@/components/LoaderFull';
 
 import CardEpisode from './CardEpisode';
 
-export default function PageLocations() {
+export default function PageEpisodes() {
   const [url, setUrl] = React.useState(
     'https://rickandmortyapi.com/api/episode'
   );
 
-  const { data, isLoading, isError } = useQuery<RootObject>(
+  const { data, isLoading, isError } = useQuery<EpisodeGlobalAPI>(
     ['data', url],
     async () => {
       const response = await fetch(url);
@@ -37,50 +37,46 @@ export default function PageLocations() {
     }
   };
 
-  const display = () => {
-    if (isLoading) {
-      return <LoaderFull />;
-    }
+  if (isLoading) {
+    return <LoaderFull />;
+  }
 
-    if (isError) {
-      return <ErrorPage />;
-    }
+  if (isError) {
+    return <ErrorPage />;
+  }
 
-    return (
-      <Stack>
-        <Stack spacing={15}>
-          {data?.results.map((e) => (
-            <CardEpisode key={e.id} episode={e}></CardEpisode>
-          ))}
-        </Stack>
-        <Divider />
-        <Stack
-          marginBottom={5}
-          justifyContent="space-around"
-          direction="row"
-          spacing={4}
-          align="center"
-        >
-          <Button
-            isDisabled={data?.info.prev === null}
-            onClick={prev}
-            colorScheme="teal"
-            variant="ghost"
-          >
-            Previous
-          </Button>
-          <Button
-            isDisabled={data?.info.next === null}
-            onClick={next}
-            colorScheme="teal"
-            variant="ghost"
-          >
-            Next
-          </Button>
-        </Stack>
+  return (
+    <Stack>
+      <Stack spacing={15}>
+        {data?.results.map((episode) => (
+          <CardEpisode key={episode.id} episode={episode}></CardEpisode>
+        ))}
       </Stack>
-    );
-  };
-
-  return display();
+      <Divider />
+      <Stack
+        marginBottom={5}
+        justifyContent="space-around"
+        direction="row"
+        spacing={4}
+        align="center"
+      >
+        <Button
+          isDisabled={data?.info.prev === null}
+          onClick={prev}
+          colorScheme="teal"
+          variant="ghost"
+        >
+          Previous
+        </Button>
+        <Button
+          isDisabled={data?.info.next === null}
+          onClick={next}
+          colorScheme="teal"
+          variant="ghost"
+        >
+          Next
+        </Button>
+      </Stack>
+    </Stack>
+  );
 }
