@@ -11,7 +11,11 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-export default function CardLocation({ location }: { location: Result }) {
+export default function CardLocation({
+  location,
+}: {
+  location: LocationInformationAPI;
+}) {
   return (
     <Card overflow="hidden" variant="outline">
       <CardHeader>

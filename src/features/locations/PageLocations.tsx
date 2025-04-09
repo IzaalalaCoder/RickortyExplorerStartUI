@@ -13,7 +13,7 @@ export default function PageLocations() {
     'https://rickandmortyapi.com/api/location'
   );
 
-  const { data, isLoading, isError } = useQuery<RootObject>(
+  const { data, isLoading, isError } = useQuery<LocationGlobalAPI>(
     ['data', url],
     async () => {
       const response = await fetch(url);
@@ -37,50 +37,46 @@ export default function PageLocations() {
     }
   };
 
-  const display = () => {
-    if (isLoading) {
-      return <LoaderFull />;
-    }
+  if (isLoading) {
+    return <LoaderFull />;
+  }
 
-    if (isError) {
-      return <ErrorPage />;
-    }
+  if (isError) {
+    return <ErrorPage />;
+  }
 
-    return (
-      <Stack>
-        <Stack spacing={15}>
-          {data?.results.map((l) => (
-            <CardLocation key={l.id} location={l}></CardLocation>
-          ))}
-        </Stack>
-        <Divider />
-        <Stack
-          marginBottom={5}
-          justifyContent="space-around"
-          direction="row"
-          spacing={4}
-          align="center"
-        >
-          <Button
-            isDisabled={data?.info.prev === null}
-            onClick={prev}
-            colorScheme="teal"
-            variant="ghost"
-          >
-            Previous
-          </Button>
-          <Button
-            isDisabled={data?.info.next === null}
-            onClick={next}
-            colorScheme="teal"
-            variant="ghost"
-          >
-            Next
-          </Button>
-        </Stack>
+  return (
+    <Stack>
+      <Stack spacing={15}>
+        {data?.results.map((location) => (
+          <CardLocation key={location.id} location={location}></CardLocation>
+        ))}
       </Stack>
-    );
-  };
-
-  return display();
+      <Divider />
+      <Stack
+        marginBottom={5}
+        justifyContent="space-around"
+        direction="row"
+        spacing={4}
+        align="center"
+      >
+        <Button
+          isDisabled={data?.info.prev === null}
+          onClick={prev}
+          colorScheme="teal"
+          variant="ghost"
+        >
+          Previous
+        </Button>
+        <Button
+          isDisabled={data?.info.next === null}
+          onClick={next}
+          colorScheme="teal"
+          variant="ghost"
+        >
+          Next
+        </Button>
+      </Stack>
+    </Stack>
+  );
 }
