@@ -4,11 +4,20 @@ import { Box, BoxProps, Container, Flex } from '@chakra-ui/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { LuFolderGit2, LuHome, LuUser } from 'react-icons/lu';
+import {
+  LuAppWindow,
+  LuFolderGit2,
+  LuHome,
+  LuTarget,
+  LuUser,
+} from 'react-icons/lu';
 
 import { Icon } from '@/components/Icons';
 import { ROUTES_ACCOUNT } from '@/features/account/routes';
 import { ROUTES_APP } from '@/features/app/routes';
+import { ROUTES_CHARACTERS } from '@/features/characters/routes';
+import { ROUTES_EPISODES } from '@/features/episodes/routes';
+import { ROUTES_LOCATIONS } from '@/features/locations/routes';
 import { ROUTES_REPOSITORIES } from '@/features/repositories/routes';
 
 const HEIGHT = 'calc(60px + env(safe-area-inset-bottom))';
@@ -58,6 +67,24 @@ export const AppNavBarMobile = (props: BoxProps) => {
             href={ROUTES_ACCOUNT.app.root()}
           >
             {t('app:layout.mainMenu.account')}
+          </AppNavBarMobileMainMenuItem>
+          <AppNavBarMobileMainMenuItem
+            icon={LuUser}
+            href={ROUTES_CHARACTERS.app.root()}
+          >
+            Characters
+          </AppNavBarMobileMainMenuItem>
+          <AppNavBarMobileMainMenuItem
+            icon={LuTarget}
+            href={ROUTES_LOCATIONS.app.root()}
+          >
+            Locations
+          </AppNavBarMobileMainMenuItem>
+          <AppNavBarMobileMainMenuItem
+            icon={LuAppWindow}
+            href={ROUTES_EPISODES.app.root()}
+          >
+            Episodes
           </AppNavBarMobileMainMenuItem>
         </Container>
       </Flex>

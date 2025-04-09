@@ -12,14 +12,24 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useTranslation } from 'react-i18next';
-import { LuFolderGit2, LuHome } from 'react-icons/lu';
+import {
+  LuAppWindow,
+  LuFolderGit2,
+  LuHome,
+  LuTarget,
+  LuUser,
+} from 'react-icons/lu';
 
 import { Icon } from '@/components/Icons';
 import { Logo } from '@/components/Logo';
 import { ROUTES_ACCOUNT } from '@/features/account/routes';
 import { ROUTES_APP } from '@/features/app/routes';
+import { ROUTES_CHARACTERS } from '@/features/characters/routes';
+import { ROUTES_EPISODES } from '@/features/episodes/routes';
 import { ROUTES_REPOSITORIES } from '@/features/repositories/routes';
 import { trpc } from '@/lib/trpc/client';
+
+import { ROUTES_LOCATIONS } from '../locations/routes';
 
 export const AppNavBarDesktop = (props: BoxProps) => {
   const { t } = useTranslation(['app']);
@@ -49,6 +59,24 @@ export const AppNavBarDesktop = (props: BoxProps) => {
                 icon={LuFolderGit2}
               >
                 {t('app:layout.mainMenu.repositories')}
+              </AppNavBarDesktopMainMenuItem>
+              <AppNavBarDesktopMainMenuItem
+                href={ROUTES_CHARACTERS.app.root()}
+                icon={LuUser}
+              >
+                Characters
+              </AppNavBarDesktopMainMenuItem>
+              <AppNavBarDesktopMainMenuItem
+                href={ROUTES_LOCATIONS.app.root()}
+                icon={LuTarget}
+              >
+                Locations
+              </AppNavBarDesktopMainMenuItem>
+              <AppNavBarDesktopMainMenuItem
+                href={ROUTES_EPISODES.app.root()}
+                icon={LuAppWindow}
+              >
+                Episodes
               </AppNavBarDesktopMainMenuItem>
             </HStack>
             <Avatar
