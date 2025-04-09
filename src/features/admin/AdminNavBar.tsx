@@ -73,9 +73,6 @@ const AdminNavBarMainMenu = ({ ...rest }: StackProps) => {
       <AdminNavBarMainMenuItem href={ROUTES_MANAGEMENT.admin.root()}>
         {t('admin:layout.mainMenu.management')}
       </AdminNavBarMainMenuItem>
-      <AdminNavBarMainMenuItem href={ROUTES_CHARACTERS.admin.root()}>
-        {t('admin:layout.mainMenu.characters')}
-      </AdminNavBarMainMenuItem>
     </Stack>
   );
 };

@@ -13,7 +13,6 @@ interface Result {
   origin: Origin;
   location: Origin;
   image: string;
-  episode: string[];
   url: string;
   created: string;
 }

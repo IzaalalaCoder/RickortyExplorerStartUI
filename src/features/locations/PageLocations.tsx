@@ -49,7 +49,9 @@ export default function PageLocations() {
     return (
       <Stack>
         <Stack spacing={15}>
-          {data?.results.map((l) => <CardLocation location={l}></CardLocation>)}
+          {data?.results.map((l) => (
+            <CardLocation key={l.id} location={l}></CardLocation>
+          ))}
         </Stack>
         <Divider />
         <Stack

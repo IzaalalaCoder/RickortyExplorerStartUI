@@ -13,7 +13,7 @@ import {
 
 export default function CardLocation({ episode }: { episode: Result }) {
   return (
-    <Card key={episode.id} overflow="hidden" variant="outline">
+    <Card overflow="hidden" variant="outline">
       <CardHeader>
         <Heading size="md">{episode.name}</Heading>
       </CardHeader>

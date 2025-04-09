@@ -13,7 +13,7 @@ import {
 
 export default function CardLocation({ location }: { location: Result }) {
   return (
-    <Card key={location.id} overflow="hidden" variant="outline">
+    <Card overflow="hidden" variant="outline">
       <CardHeader>
         <Heading size="md">{location.name}</Heading>
       </CardHeader>

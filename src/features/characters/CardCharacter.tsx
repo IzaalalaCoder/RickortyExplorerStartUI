@@ -21,7 +21,6 @@ export default function CardCharacters({ character }: { character: Result }) {
 
   return (
     <Card
-      key={character.id}
       direction={{ base: 'column', sm: 'row' }}
       overflow="hidden"
       variant="outline"

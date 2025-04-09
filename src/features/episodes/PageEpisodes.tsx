@@ -49,7 +49,9 @@ export default function PageLocations() {
     return (
       <Stack>
         <Stack spacing={15}>
-          {data?.results.map((e) => <CardEpisode episode={e}></CardEpisode>)}
+          {data?.results.map((e) => (
+            <CardEpisode key={e.id} episode={e}></CardEpisode>
+          ))}
         </Stack>
         <Divider />
         <Stack

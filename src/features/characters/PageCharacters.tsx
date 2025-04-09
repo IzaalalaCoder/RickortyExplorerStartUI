@@ -50,7 +50,7 @@ export default function PageCharacters() {
       <Stack>
         <Stack spacing={15}>
           {data?.results.map((c) => (
-            <CardCharacter character={c}></CardCharacter>
+            <CardCharacter key={c.id} character={c}></CardCharacter>
           ))}
         </Stack>
         <Divider />
