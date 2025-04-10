@@ -19,11 +19,19 @@ export default function PageEpisodes() {
     async () => {
       const response = await fetch(url);
       if (!response.ok) {
-        const errMsg =
-          response.status === 404
-            ? 'There is nothing here'
-            : response.statusText;
-        throw new Error(errMsg);
+        if (response.status === 404) {
+          return {
+            info: {
+              count: 0,
+              pages: 0,
+              next: null,
+              prev: null,
+            },
+            results: [],
+          };
+        } else {
+          throw new Error(response.statusText);
+        }
       }
       return response.json();
     }
@@ -46,14 +54,10 @@ export default function PageEpisodes() {
       <Stack flex={1} spacing={4}>
         <Heading size="md">Liste d'épisodes</Heading>
         {isLoading && <LoaderFull />}
-        {isError &&
-          error instanceof Error &&
-          error.message !== 'There is nothing here' && <ErrorPage />}
-        {isError &&
-          error instanceof Error &&
-          error.message === 'There is nothing here' && (
-            <Text>Aucun épisode n'a été trouvé</Text>
-          )}
+        {isError && <ErrorPage />}
+        {data?.results.length === 0 && (
+          <Text>Aucun épisode n'a été trouvé</Text>
+        )}
         {!isError && !isLoading && (
           <Stack>
             <Stack spacing={15}>

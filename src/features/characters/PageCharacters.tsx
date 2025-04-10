@@ -14,16 +14,24 @@ export default function PageCharacters() {
     'https://rickandmortyapi.com/api/character'
   );
 
-  const { data, isLoading, isError, error } = useQuery<CharacterGlobalAPI>(
+  const { data, isLoading, isError } = useQuery<CharacterGlobalAPI>(
     ['searchAllCharacters', url],
     async () => {
       const response = await fetch(url);
       if (!response.ok) {
-        const errMsg =
-          response.status === 404
-            ? 'There is nothing here'
-            : response.statusText;
-        throw new Error(errMsg);
+        if (response.status === 404) {
+          return {
+            info: {
+              count: 0,
+              pages: 0,
+              next: null,
+              prev: null,
+            },
+            results: [],
+          };
+        } else {
+          throw new Error(response.statusText);
+        }
       }
       return response.json();
     }
@@ -46,14 +54,10 @@ export default function PageCharacters() {
       <Stack flex={1} spacing={4}>
         <Heading size="md">Liste de personnages</Heading>
         {isLoading && <LoaderFull />}
-        {isError &&
-          error instanceof Error &&
-          error.message !== 'There is nothing here' && <ErrorPage />}
-        {isError &&
-          error instanceof Error &&
-          error.message === 'There is nothing here' && (
-            <Text>Aucun personnage n'a été trouvé</Text>
-          )}
+        {isError && <ErrorPage />}
+        {data?.results.length === 0 && (
+          <Text>Aucun personnage n'a été trouvé</Text>
+        )}
         {!isError && !isLoading && (
           <Stack>
             <Stack spacing={15}>
