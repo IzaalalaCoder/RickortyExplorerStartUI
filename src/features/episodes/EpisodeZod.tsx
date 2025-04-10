@@ -17,11 +17,7 @@ const episodesSchema = z.object({
     next: z.string(),
     prev: z.string(),
   }),
-  results: z.array(
-    z.object({
-      episodeSchema,
-    })
-  ),
+  results: z.array(episodeSchema),
 });
 
 export type EpisodeAPI = z.infer<typeof episodeSchema>;

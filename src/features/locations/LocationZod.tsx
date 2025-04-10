@@ -17,11 +17,7 @@ const locationsSchema = z.object({
     next: z.string(),
     prev: z.string(),
   }),
-  results: z.array(
-    z.object({
-      locationSchema,
-    })
-  ),
+  results: z.array(locationSchema),
 });
 
 export type LocationAPI = z.infer<typeof locationSchema>;
