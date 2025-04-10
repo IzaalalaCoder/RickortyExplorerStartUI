@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const episodeSchema = z.object({
+export const episodeSchema = z.object({
   id: z.number(),
   name: z.string(),
   air_date: z.string(),
@@ -10,12 +10,12 @@ const episodeSchema = z.object({
   created: z.string(),
 });
 
-const episodesSchema = z.object({
+export const episodesSchema = z.object({
   info: z.object({
     count: z.number(),
     pages: z.number(),
-    next: z.string(),
-    prev: z.string(),
+    next: z.string().nullable(),
+    prev: z.string().nullable(),
   }),
   results: z.array(episodeSchema),
 });

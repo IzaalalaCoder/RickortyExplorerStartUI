@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const characterSchema = z.object({
+export const characterSchema = z.object({
   id: z.number(),
   name: z.string(),
   status: z.string(),
@@ -21,12 +21,12 @@ const characterSchema = z.object({
   created: z.string(),
 });
 
-const charactersSchema = z.object({
+export const charactersSchema = z.object({
   info: z.object({
     count: z.number(),
     pages: z.number(),
-    next: z.string(),
-    prev: z.string(),
+    next: z.string().nullable(),
+    prev: z.string().nullable(),
   }),
   results: z.array(characterSchema),
 });

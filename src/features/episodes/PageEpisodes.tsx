@@ -3,25 +3,24 @@ import React from 'react';
 import { Button, Divider, Heading, Stack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 
-import { ErrorPage } from '@/components/ErrorPage';
 import { LoaderFull } from '@/components/LoaderFull';
 
 import { AppLayoutPage } from '../app/AppLayoutPage';
 import CardEpisode from './CardEpisode';
-import { EpisodesAPI } from './EpisodeZod';
+import { episodesSchema } from './EpisodeZod';
 
 export default function PageEpisodes() {
   const [url, setUrl] = React.useState(
     'https://rickandmortyapi.com/api/episode'
   );
 
-  const { data, isLoading, isError, error } = useQuery<EpisodesAPI>(
-    ['searchAllEpisodes', url],
-    async () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['searchAllEpisodes', url],
+    queryFn: async () => {
       const response = await fetch(url);
       if (!response.ok) {
         if (response.status === 404) {
-          return {
+          return episodesSchema.parse({
             info: {
               count: 0,
               pages: 0,
@@ -29,14 +28,14 @@ export default function PageEpisodes() {
               prev: null,
             },
             results: [],
-          };
+          });
         } else {
           throw new Error(response.statusText);
         }
       }
-      return response.json();
-    }
-  );
+      return episodesSchema.parse(await response.json());
+    },
+  });
 
   const prev = () => {
     if (data && data.info.prev !== null) {
@@ -55,8 +54,8 @@ export default function PageEpisodes() {
       <Stack flex={1} spacing={4}>
         <Heading size="md">Liste d'épisodes</Heading>
         {isLoading && <LoaderFull />}
-        {isError && <ErrorPage />}
-        {data?.results.length === 0 && (
+        {isError && <Text>Erreur lors de la récupération des données</Text>}
+        {!isError && !isLoading && data?.results.length === 0 && (
           <Text>Aucun épisode n'a été trouvé</Text>
         )}
         {!isError && !isLoading && (

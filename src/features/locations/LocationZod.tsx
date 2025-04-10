@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-const locationSchema = z.object({
+export const locationSchema = z.object({
   id: z.number(),
   name: z.string(),
   type: z.string(),
@@ -10,12 +10,12 @@ const locationSchema = z.object({
   created: z.string(),
 });
 
-const locationsSchema = z.object({
+export const locationsSchema = z.object({
   info: z.object({
     count: z.number(),
     pages: z.number(),
-    next: z.string(),
-    prev: z.string(),
+    next: z.string().nullable(),
+    prev: z.string().nullable(),
   }),
   results: z.array(locationSchema),
 });

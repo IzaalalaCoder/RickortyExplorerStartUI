@@ -3,25 +3,24 @@ import React from 'react';
 import { Button, Divider, Heading, Stack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 
-import { ErrorPage } from '@/components/ErrorPage';
 import { LoaderFull } from '@/components/LoaderFull';
 
 import { AppLayoutPage } from '../app/AppLayoutPage';
 import CardCharacter from './CardCharacter';
-import { CharactersAPI } from './CharacterZod';
+import { charactersSchema } from './CharacterZod';
 
 export default function PageCharacters() {
   const [url, setUrl] = React.useState(
     'https://rickandmortyapi.com/api/character'
   );
 
-  const { data, isLoading, isError } = useQuery<CharactersAPI>(
-    ['searchAllCharacters', url],
-    async () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ['searchAllCharacters', url],
+    queryFn: async () => {
       const response = await fetch(url);
       if (!response.ok) {
         if (response.status === 404) {
-          return {
+          return charactersSchema.parse({
             info: {
               count: 0,
               pages: 0,
@@ -29,14 +28,14 @@ export default function PageCharacters() {
               prev: null,
             },
             results: [],
-          };
+          });
         } else {
           throw new Error(response.statusText);
         }
       }
-      return response.json();
-    }
-  );
+      return charactersSchema.parse(await response.json());
+    },
+  });
 
   const prev = () => {
     if (data && data.info.prev !== null) {
@@ -55,8 +54,8 @@ export default function PageCharacters() {
       <Stack flex={1} spacing={4}>
         <Heading size="md">Liste de personnages</Heading>
         {isLoading && <LoaderFull />}
-        {isError && <ErrorPage />}
-        {data?.results.length === 0 && (
+        {isError && <Text>Erreur lors de la récupération des données</Text>}
+        {!isError && !isLoading && data?.results.length === 0 && (
           <Text>Aucun personnage n'a été trouvé</Text>
         )}
         {!isError && !isLoading && (

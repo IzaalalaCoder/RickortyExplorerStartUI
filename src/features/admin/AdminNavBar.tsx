@@ -51,7 +51,6 @@ import { useAdminLayoutContext } from '@/features/admin/AdminLayout';
 import { ROUTES_ADMIN } from '@/features/admin/routes';
 import { ROUTES_APP } from '@/features/app/routes';
 import { ROUTES_AUTH } from '@/features/auth/routes';
-import { ROUTES_CHARACTERS } from '@/features/characters/routes';
 import { ROUTES_DOCS } from '@/features/docs/routes';
 import { ROUTES_MANAGEMENT } from '@/features/management/routes';
 import { ROUTES_REPOSITORIES } from '@/features/repositories/routes';
