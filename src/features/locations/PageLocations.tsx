@@ -18,7 +18,13 @@ export default function PageLocations() {
     ['searchAllLocations', url],
     async () => {
       const response = await fetch(url);
-      if (!response.ok) throw new Error('Network response was not ok');
+      if (!response.ok) {
+        const errMsg =
+          response.status === 404
+            ? 'There is nothing here'
+            : response.statusText;
+        throw new Error(errMsg);
+      }
       return response.json();
     }
   );
@@ -37,45 +43,54 @@ export default function PageLocations() {
 
   return (
     <AppLayoutPage>
-      {isLoading && <LoaderFull />}
-      {isError && <ErrorPage />}
       <Stack flex={1} spacing={4}>
         <Heading size="md">Liste de lieux</Heading>
-        <Stack>
-          <Stack spacing={15}>
-            {data?.results.map((location) => (
-              <CardLocation
-                key={location.id}
-                location={location}
-              ></CardLocation>
-            ))}
-          </Stack>
-          <Divider />
-          <Stack
-            marginBottom={5}
-            justifyContent="space-around"
-            direction="row"
-            spacing={4}
-            align="center"
-          >
-            <Button
-              isDisabled={data?.info.prev === null}
-              onClick={prev}
-              colorScheme="teal"
-              variant="ghost"
+        {isLoading && <LoaderFull />}
+        {isError &&
+          error instanceof Error &&
+          error.message !== 'There is nothing here' && <ErrorPage />}
+        {isError &&
+          error instanceof Error &&
+          error.message === 'There is nothing here' && (
+            <Text>Aucun lieu n'a été trouvé</Text>
+          )}
+        {!isError && !isLoading && (
+          <Stack>
+            <Stack spacing={15}>
+              {data?.results.map((location) => (
+                <CardLocation
+                  key={location.id}
+                  location={location}
+                ></CardLocation>
+              ))}
+            </Stack>
+            <Divider />
+            <Stack
+              marginBottom={5}
+              justifyContent="space-around"
+              direction="row"
+              spacing={4}
+              align="center"
             >
-              Previous
-            </Button>
-            <Button
-              isDisabled={data?.info.next === null}
-              onClick={next}
-              colorScheme="teal"
-              variant="ghost"
-            >
-              Next
-            </Button>
+              <Button
+                isDisabled={data?.info.prev === null}
+                onClick={prev}
+                colorScheme="teal"
+                variant="ghost"
+              >
+                Previous
+              </Button>
+              <Button
+                isDisabled={data?.info.next === null}
+                onClick={next}
+                colorScheme="teal"
+                variant="ghost"
+              >
+                Next
+              </Button>
+            </Stack>
           </Stack>
-        </Stack>
+        )}
       </Stack>
     </AppLayoutPage>
   );
