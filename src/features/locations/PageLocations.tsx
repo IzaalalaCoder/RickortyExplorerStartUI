@@ -9,35 +9,14 @@ import { LoaderFull } from '@/components/LoaderFull';
 
 import { AppLayoutPage } from '../app/AppLayoutPage';
 import CardLocation from './CardLocation';
+import { LocationsAPI } from './LocationZod';
 
 export default function PageLocations() {
-  const locationSchema = z.object({
-    info: z.object({
-      count: z.number(),
-      pages: z.number(),
-      next: z.string(),
-      prev: z.string(),
-    }),
-    results: z.array(
-      z.object({
-        id: z.number(),
-        name: z.string(),
-        type: z.string(),
-        dimension: z.string(),
-        residents: z.array(z.string()),
-        url: z.string(),
-        created: z.string(),
-      })
-    ),
-  });
-
-  type LocationAPI = z.infer<typeof locationSchema>;
-
   const [url, setUrl] = React.useState(
     'https://rickandmortyapi.com/api/location'
   );
 
-  const { data, isLoading, isError, error } = useQuery<LocationAPI>(
+  const { data, isLoading, isError, error } = useQuery<LocationsAPI>(
     ['searchAllLocations', url],
     async () => {
       const response = await fetch(url);
