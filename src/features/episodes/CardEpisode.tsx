@@ -11,11 +11,9 @@ import {
   Text,
 } from '@chakra-ui/react';
 
-export default function CardLocation({
-  episode,
-}: {
-  episode: EpisodeInformationAPI;
-}) {
+import { EpisodeAPI } from './EpisodeZod';
+
+export default function CardEpisode({ episode }: { episode: EpisodeAPI }) {
   return (
     <Card overflow="hidden" variant="outline">
       <CardHeader>

@@ -2,10 +2,12 @@ import React from 'react';
 
 import { Badge, Card, CardBody, Heading, Image, Stack } from '@chakra-ui/react';
 
-export default function CardCharacters({
+import { CharacterAPI } from './CharacterZod';
+
+export default function CardCharacter({
   character,
 }: {
-  character: CharacterInformationAPI;
+  character: CharacterAPI;
 }) {
   const genderColor =
     character.gender === 'unknown'
