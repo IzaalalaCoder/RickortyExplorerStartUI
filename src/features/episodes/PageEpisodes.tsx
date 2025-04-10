@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button, Divider, Heading, Stack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import { z } from 'zod';
 
 import { ErrorPage } from '@/components/ErrorPage';
 import { LoaderFull } from '@/components/LoaderFull';
@@ -10,11 +11,33 @@ import { AppLayoutPage } from '../app/AppLayoutPage';
 import CardEpisode from './CardEpisode';
 
 export default function PageEpisodes() {
+  const episodeSchema = z.object({
+    info: z.object({
+      count: z.number(),
+      pages: z.number(),
+      next: z.string(),
+      prev: z.string(),
+    }),
+    results: z.array(
+      z.object({
+        id: z.number(),
+        name: z.string(),
+        air_date: z.string(),
+        episode: z.string(),
+        characters: z.array(z.string()),
+        url: z.string(),
+        created: z.string(),
+      })
+    ),
+  });
+
+  type EpisodeAPI = z.infer<typeof episodeSchema>;
+
   const [url, setUrl] = React.useState(
     'https://rickandmortyapi.com/api/episode'
   );
 
-  const { data, isLoading, isError, error } = useQuery<EpisodeGlobalAPI>(
+  const { data, isLoading, isError, error } = useQuery<EpisodeAPI>(
     ['searchAllEpisodes', url],
     async () => {
       const response = await fetch(url);

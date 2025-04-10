@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Button, Divider, Heading, Stack, Text } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
+import { z } from 'zod';
 
 import { ErrorPage } from '@/components/ErrorPage';
 import { LoaderFull } from '@/components/LoaderFull';
@@ -10,11 +11,33 @@ import { AppLayoutPage } from '../app/AppLayoutPage';
 import CardLocation from './CardLocation';
 
 export default function PageLocations() {
+  const locationSchema = z.object({
+    info: z.object({
+      count: z.number(),
+      pages: z.number(),
+      next: z.string(),
+      prev: z.string(),
+    }),
+    results: z.array(
+      z.object({
+        id: z.number(),
+        name: z.string(),
+        type: z.string(),
+        dimension: z.string(),
+        residents: z.array(z.string()),
+        url: z.string(),
+        created: z.string(),
+      })
+    ),
+  });
+
+  type LocationAPI = z.infer<typeof locationSchema>;
+
   const [url, setUrl] = React.useState(
     'https://rickandmortyapi.com/api/location'
   );
 
-  const { data, isLoading, isError, error } = useQuery<LocationGlobalAPI>(
+  const { data, isLoading, isError, error } = useQuery<LocationAPI>(
     ['searchAllLocations', url],
     async () => {
       const response = await fetch(url);
